@@ -20,7 +20,8 @@ app.post('/v1/auth',(req, res) => {
    var password = req.body.password;
    if (user_name=='AGAM'&& password=='123')
    {
-        res.json({"Token": "kajsddd"})
+        res.json( {"access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        "expires": "2012-04-23T18:25:43.511Z"})
    }
    else {
          res.status(400)
