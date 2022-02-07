@@ -1,49 +1,40 @@
 openapi: 3.0.0
 info:
   version: 1.0.0-oas3
-  title: SampleAPIs
-  description: New APIs
+  title: Swagger Demo for CS561 
+  description: Mock APIs
 servers:
-  - url: https://api.example.com/v1
+  - url: https://ec2-75-101-208-110.compute-1.amazonaws.com/
 paths: 
   /v1/weather:
     get:
-    
-      summary: Returns a user by ID
-      
-      # parameters:
-        # - name: userId
-        #   in: path
-        #   required: true
-        #   description: The ID of the user to return
-        #   schema:
-        #     type: integer
-            
-        # - $ref: '#/components/parameters/q'
-        # - $ref: '#/components/parameters/id'
-        # - $ref: '#/components/parameters/lat'
-        # - $ref: '#/components/parameters/lon'
-        # - $ref: '#/components/parameters/zip'
-        # - $ref: '#/components/parameters/units'
-        # - $ref: '#/components/parameters/lang'
-        # - $ref: '#/components/parameters/mode'
-      
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Successful response
-  
           content:
             application/json:
               schema:
-              
-                
                 $ref: '#/components/schemas/200'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
                 
                 
   /v1/hello:
     get:
-      # parameters: 
-      #   message:
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Successfull respose
@@ -52,30 +43,54 @@ paths:
               schema:
                 type: object
                 example: {"message" : "new _ message"}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
                 
   /v1/auth:
     post:
-      parameters:
-        - name: Username
-          in: query
-          required: true
-          description: The username
-          schema:
-            type: string
-          
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
       responses:
         '200':
           description: Successfull respose
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/auth"
+                $ref: "#/components/schemas/tokenResponse"
         '400':
-          description: Error400
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/auth400"
+                $ref: "#/components/schemas/error"
+        '401':
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
                 
    
                 
@@ -85,89 +100,33 @@ paths:
       
                   
 components:
-
-  # parameters:
-  #   q:
-  #     name: q
-  #     in: query
-  #     description: "*City name. *Example: London. You can call by city name, or by city name and country code. The API responds with a list of results that match a searching word. For the query value, type the city name and optionally the country code divided by comma; use ISO 3166 country codes."
-  #     schema:
-  #       type: string
-  #   id:
-  #     name: id
-  #     in: query
-  #     description: "*City ID. *Example: `2172797`. You can call by city ID. API responds with exact result. The List of city IDs can be downloaded [here](http://bulk.openweathermap.org/sample/). You can include multiple cities in parameter &mdash; just separate them by commas. The limit of locations is 20. Note: A single ID counts as a one API call. So, if you have city IDs. it's treated as 3 API calls."
-  #     schema:
-  #       type: string
-
-  #   lat:
-  #     name: lat
-  #     in: query
-  #     description: "*Latitude. *Example: 35. The latitude cordinate of the location of your interest. Must use with `lon`."
-  #     schema:
-  #       type: string
-
-  #   lon:
-  #     name: lon
-  #     in: query
-  #     description: "*Longitude. *Example: 139. Longitude cordinate of the location of your interest. Must use with `lat`."
-  #     schema:
-  #       type: string
-
-  #   zip:
-  #     name: zip
-  #     in: query
-  #     description: "*Zip code. Search by zip code. *Example: 95050,us. Please note if country is not specified then the search works for USA as a default."
-  #     schema:
-  #       type: string
-
-  #   units:
-  #     name: units
-  #     in: query
-  #     description: '*Units. *Example: imperial. Possible values: `standard`, `metric`, and `imperial`. When you do not use units parameter, format is `standard` by default.'
-  #     schema:
-  #       type: string
-  #       enum: [standard, metric, imperial]
-  #       default: "imperial"
-
-  #   lang:
-  #     name: lang
-  #     in: query
-  #     description: '*Language. *Example: en. You can use lang parameter to get the output in your language. We support the following languages that you can use with the corresponded lang values: Arabic - `ar`, Bulgarian - `bg`, Catalan - `ca`, Czech - `cz`, German - `de`, Greek - `el`, English - `en`, Persian (Farsi) - `fa`, Finnish - `fi`, French - `fr`, Galician - `gl`, Croatian - `hr`, Hungarian - `hu`, Italian - `it`, Japanese - `ja`, Korean - `kr`, Latvian - `la`, Lithuanian - `lt`, Macedonian - `mk`, Dutch - `nl`, Polish - `pl`, Portuguese - `pt`, Romanian - `ro`, Russian - `ru`, Swedish - `se`, Slovak - `sk`, Slovenian - `sl`, Spanish - `es`, Turkish - `tr`, Ukrainian - `ua`, Vietnamese - `vi`, Chinese Simplified - `zh_cn`, Chinese Traditional - `zh_tw`.'
-  #     schema:
-  #       type: string
-  #       enum: [ar, bg, ca, cz, de, el, en, fa, fi, fr, gl, hr, hu, it, ja, kr, la, lt, mk, nl, pl, pt, ro, ru, se, sk, sl, es, tr, ua, vi, zh_cn, zh_tw]
-  #       default: "en"
-
-  #   mode:
-  #     name: mode
-  #     in: query
-  #     description: "*Mode. *Example: html. Determines format of response. Possible values are `xml` and `html`. If mode parameter is empty the format is `json` by default."
-  #     schema:
-  #       type: string
-  #       enum: [json, xml, html]
-  #       default: "json"
-
-  schemas:
-    auth:
-      title: Authri Token
-      type : object
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation 
       
+  schemas:
+    tokenResponse:
+      title: Access Token Response
+      type : object
       properties:
         token:
           type: string
-          example: "hdjhjf98989898"
+          example: "eyJhbGciOiJIUzI1...T-74z1C1OMFocbpmrVXw"
+        expires:
+          type: string
+          example: "2012-04-23T18:25:43.511Z"
           
-    auth400:
-      title: Bad Auth
+    error:
+      title: ErrorMessage
       type: object
-      example: "Bad request"
-      
       properties:
-        token: 
+        message: 
           type: string 
-          example: "Error400"
-    
+          example: "Error message"
+
+
     200:
       title: Successful response
       type: object
