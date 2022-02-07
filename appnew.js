@@ -1,12 +1,12 @@
 const express = require('express')
-const crypto = require('crypto')
 var bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto')
 const app = express()
 const port = 3000
 const BASE_PATH = "/v1/"
 
-const TOKEN_SECRET = process.env.TOKEN_SECRET || 'cd47d09523b2a3e304209f8aeb63c06c5d8ece4bf36d6df1bf72b2d98d080536'
+
 
 const corvallisWeather = {
     "coord": {
@@ -53,6 +53,7 @@ const corvallisWeather = {
     "cod": 200
 }
 
+const TOKEN_SECRET = process.env.TOKEN_SECRET || 'cd47d09523b2a3e304209f8aeb63c06c5d8ece4bf36d6df1bf72b2d98d080536'
 
 app.use(function (req, res, next) {
 
