@@ -57,7 +57,7 @@ const TOKEN_SECRET = process.env.TOKEN_SECRET || 'cd47d09523b2a3e304209f8aeb63c0
 
 app.use(function (req, res, next) {
 
-    const allowedOrigins = ['https://editor.swagger.io', 'https://hoppscotch.io', 'https://ec2-75-101-208-110.compute-1.amazonaws.com'];
+    const allowedOrigins = ['https://editor.swagger.io', 'https://hoppscotch.io', 'http://ec2-75-101-208-110.compute-1.amazonaws.com:3000'];
     const origin = req.headers.origin;
     
     if (allowedOrigins.includes(origin)) {
